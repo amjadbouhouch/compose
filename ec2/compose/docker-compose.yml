@@ -1,0 +1,29 @@
+version: "2.1"
+services:
+  wireguard:
+    image: linuxserver/wireguard
+    cap_add:
+      - NET_ADMIN
+      # - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SERVERURL=192.168.100.7 #optional
+      - PEERDNS=192.168.100.1 #optional
+      - SERVERPORT=51820 #optional
+      - PEERS=Profile1 #optional
+      # - INTERNAL_SUBNET=10.13.13.0 #optional
+      - ALLOWEDIPS=0.0.0.0/0 #optional
+      - LOG_CONFS=true
+    volumes:
+      - ./.wireguard-server/config:/config:rw
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+# yum update
+# amazon-linux-extras install docker
+# sudo systemctl enable docker / status / start
+# usermod -a -G docker ec2-user

@@ -1,0 +1,10 @@
+version: "2.1"
+
+services:
+  ubuntu:
+    image: ubuntu
+    container_name: ubuntu
+    tty: true
+    volumes:
+      - ./.wireguard-server/config:/config:r
+      - 

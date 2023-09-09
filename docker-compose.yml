@@ -1,0 +1,50 @@
+version: "2.1"
+services:
+  # db:
+  #   image: mongo:4.4
+  #   container_name: db
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     # root username
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+  #     # root password
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  #     # root initial data base default to (admin)
+  #     MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+  #     # to create a user with username=${DB_USER} && password=${DB_PASSWORD} after mongo starts
+  #     DB_USER: ${DB_USER}
+  #     DB_PASSWORD: ${DB_PASSWORD}
+  #   volumes:
+  #     - ./docker-entrypoint-initdb.d/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  #     - ./data/db:/data/db
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      # - SERVERURL=192.168.100.7 #optional
+      # - PEERDNS=192.168.100.1 #optional
+      # - SERVERPORT=51820 #optional
+      - PEERS=Profile1 #optional
+      # - INTERNAL_SUBNET=10.13.13.0 #optional
+      - ALLOWEDIPS=0.0.0.0/0 #optional
+      - LOG_CONFS=true
+    volumes:
+      - ./.wireguard-server/config:/config:rw
+      - /lib/modules:/lib/modules
+    ports:
+      - 51820:51820/udp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    # restart: unless-stopped
+# networks: 
+#   default: 
+#     external: 
+#       name: shared_net
+  
