@@ -1,2 +1,6 @@
 #!/bin/bash
-sudo amazon-linux-extras |grep kernel
+yum update -y
+yum list kernel
+uname -r
+yum update kernel -y
+reboot
